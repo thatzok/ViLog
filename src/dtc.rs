@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "PascalCase")]
 pub struct ResponseDtc {
     pub count: u32,
+    pub grand_total: Option<u32>,
+    #[serde(default)]
     pub list_entries: Vec<ListEntryDtc>,
 }
 
