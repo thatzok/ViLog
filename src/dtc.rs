@@ -12,6 +12,7 @@ pub struct ResponseDtc {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "PascalCase")]
 pub struct ListEntryDtc {
+    #[serde(alias = "Info", alias = "Service", alias = "Warning", alias = "Error")]
     pub state: State,
     pub date_time: EntryDateTime,
     pub unknown: i64,

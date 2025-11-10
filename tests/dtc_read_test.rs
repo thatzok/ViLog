@@ -29,7 +29,7 @@ fn read_258_1_json_into_response_dtc() {
 #[test]
 fn read_266_1_json_into_response_dtc() {
     let json_path = "tests/testdata/266_1.json";
-    let data = std::fs::read_to_string(json_path).expect("failed to read test JSON file");
+    let data = fs::read_to_string(json_path).expect("failed to read test JSON file");
 
     let parsed: dtc::ResponseDtc =
         serde_json::from_str(&data).expect("failed to deserialize JSON into ResponseDtc");
