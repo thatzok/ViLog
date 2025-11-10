@@ -1,0 +1,115 @@
+{
+  "Count": 10,
+  "ListEntries": [
+    {
+      "Info": {
+        "ID": 120,
+        "Text": "NoiseReductionModeActive"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 11:03:01",
+        "Timestamp": 1762768981000
+      },
+      "Unknown": 566
+    },
+    {
+      "Info": {
+        "ID": 120,
+        "Text": "NoiseReductionModeActive"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 10:12:51",
+        "Timestamp": 1762765971000
+      },
+      "Unknown": 566
+    },
+    {
+      "Info": {
+        "ID": 120,
+        "Text": "NoiseReductionModeActive"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 07:32:43",
+        "Timestamp": 1762756363000
+      },
+      "Unknown": 566
+    },
+    {
+      "Info": {
+        "ID": 120,
+        "Text": "NoiseReductionModeActive"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 07:01:11",
+        "Timestamp": 1762754471000
+      },
+      "Unknown": 566
+    },
+    {
+      "Info": {
+        "ID": 120,
+        "Text": "NoiseReductionModeActive"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-09 19:58:20",
+        "Timestamp": 1762714700000
+      },
+      "Unknown": 566
+    },
+    {
+      "Info": {
+        "ID": 120,
+        "Text": "NoiseReductionModeActive"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-09 15:46:50",
+        "Timestamp": 1762699610000
+      },
+      "Unknown": 566
+    },
+    {
+      "Info": {
+        "ID": 120,
+        "Text": "NoiseReductionModeActive"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-09 13:43:29",
+        "Timestamp": 1762692209000
+      },
+      "Unknown": 566
+    },
+    {
+      "Info": {
+        "ID": 120,
+        "Text": "NoiseReductionModeActive"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-09 11:51:49",
+        "Timestamp": 1762685509000
+      },
+      "Unknown": 566
+    },
+    {
+      "Info": {
+        "ID": 120,
+        "Text": "NoiseReductionModeActive"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-09 09:26:55",
+        "Timestamp": 1762676815000
+      },
+      "Unknown": 566
+    },
+    {
+      "Info": {
+        "ID": 120,
+        "Text": "NoiseReductionModeActive"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-09 02:11:08",
+        "Timestamp": 1762650668000
+      },
+      "Unknown": 566
+    }
+  ]
+}

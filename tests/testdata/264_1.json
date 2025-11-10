@@ -1,0 +1,28 @@
+{
+  "Count": 2,
+  "GrandTotal": 2,
+  "ListEntries": [
+    {
+      "Warning": {
+        "ID": 100,
+        "Text": "RestoreEepromToDefault"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-09 18:50:06",
+        "Timestamp": 1762710606000
+      },
+      "Unknown": 566
+    },
+    {
+      "Warning": {
+        "ID": 100,
+        "Text": "RestoreEepromToDefault"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-09 18:50:06",
+        "Timestamp": 1762710606000
+      },
+      "Unknown": 1
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+open3e/680_257_StatusDtcList
+open3e/680_258_StatusDtcHistory
+open3e/680_259_InfoDtcList
+open3e/680_260_InfoDtcHistory
+open3e/680_261_ServiceDtcList
+open3e/680_262_ServiceDtcHistory
+open3e/680_263_WarningDtcList
+open3e/680_264_WarningDtcHistory
+open3e/680_265_ErrorDtcList
+open3e/680_266_ErrorDtcHistory
+
+
+{"mode": "read-json", "data":[257,258,259,260,261,262,263,264,265,266]}
+
+// history only
+{"mode": "read-json", "data":[258,260,262,264,266]}
+
+

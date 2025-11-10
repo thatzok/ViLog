@@ -1,0 +1,115 @@
+{
+  "Count": 10,
+  "ListEntries": [
+    {
+      "State": {
+        "ID": 134,
+        "Text": "FourThreeWayValveIdlePosition"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 11:19:28",
+        "Timestamp": 1762769968000
+      },
+      "Unknown": 1
+    },
+    {
+      "State": {
+        "ID": 123,
+        "Text": "HeatPumpOff"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 11:19:25",
+        "Timestamp": 1762769965000
+      },
+      "Unknown": 1
+    },
+    {
+      "State": {
+        "ID": 129,
+        "Text": "HeatPumpPostRun"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 11:17:24",
+        "Timestamp": 1762769844000
+      },
+      "Unknown": 1
+    },
+    {
+      "State": {
+        "ID": 118,
+        "Text": "FourThreeWayValveInternalBufferPosition"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 10:12:29",
+        "Timestamp": 1762765949000
+      },
+      "Unknown": 1
+    },
+    {
+      "State": {
+        "ID": 134,
+        "Text": "FourThreeWayValveIdlePosition"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 10:12:28",
+        "Timestamp": 1762765948000
+      },
+      "Unknown": 1
+    },
+    {
+      "State": {
+        "ID": 115,
+        "Text": "FourThreeWayValveDomesticHotWaterPosition"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 09:39:51",
+        "Timestamp": 1762763991000
+      },
+      "Unknown": 1
+    },
+    {
+      "State": {
+        "ID": 134,
+        "Text": "FourThreeWayValveIdlePosition"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 09:39:50",
+        "Timestamp": 1762763990000
+      },
+      "Unknown": 1
+    },
+    {
+      "State": {
+        "ID": 118,
+        "Text": "FourThreeWayValveInternalBufferPosition"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 07:00:49",
+        "Timestamp": 1762754449000
+      },
+      "Unknown": 1
+    },
+    {
+      "State": {
+        "ID": 134,
+        "Text": "FourThreeWayValveIdlePosition"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 07:00:48",
+        "Timestamp": 1762754448000
+      },
+      "Unknown": 1
+    },
+    {
+      "State": {
+        "ID": 115,
+        "Text": "FourThreeWayValveDomesticHotWaterPosition"
+      },
+      "DateTime": {
+        "DateTime": "2025-11-10 06:25:54",
+        "Timestamp": 1762752354000
+      },
+      "Unknown": 1
+    }
+  ]
+}
