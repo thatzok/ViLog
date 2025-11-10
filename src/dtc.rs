@@ -45,3 +45,9 @@ pub fn list_entries_new_not_in_old(
         .filter(|entry| !old_message.list_entries.contains(entry))
         .collect()
 }
+
+/// Sorts the given vector of `ListEntryDtc` by their `timestamp` (ascending).
+/// This function sorts the vector in-place.
+pub fn sort_entries_by_timestamp(entries: &mut Vec<ListEntryDtc>) {
+    entries.sort_by_key(|e| e.date_time.timestamp);
+}
