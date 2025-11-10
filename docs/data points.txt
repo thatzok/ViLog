@@ -16,3 +16,9 @@ open3e/680_266_ErrorDtcHistory
 {"mode": "read-json", "data":[258,260,262,264,266]}
 
 
+
+[
+ListEntryDtc { state: State { id: 134, text: "FourThreeWayValveIdlePosition" },date_time: EntryDateTime { date_time: "2025-11-10 11:19:28", timestamp: 1762769968000 }, unknown: 1 },
+ListEntryDtc { state: State { id: 123, text: "HeatPumpOff" },                  date_time: EntryDateTime { date_time: "2025-11-10 11:19:25", timestamp: 1762769965000 }, unknown: 1 },
+ListEntryDtc { state: State { id: 129, text: "HeatPumpPostRun" },              date_time: EntryDateTime { date_time: "2025-11-10 11:17:24", timestamp: 1762769844000 }, unknown: 1 }
+]
