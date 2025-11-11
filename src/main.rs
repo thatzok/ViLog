@@ -49,21 +49,27 @@ async fn main() -> Result<(), Box<dyn Error>> {
                     serde_json::from_str(payload_str).expect("failed to parse payload");
 
                 let mut diff: Vec<ListEntryDtc> = Vec::new();
+                let mut severity = "Debug";
 
                 if topic_str == topics.error.as_str() {
                     diff = dtc::list_entries_new_not_in_old(&old_error_message, &new_message);
                     old_error_message = new_message;
+                    severity = "err";
                 } else if topic_str == topics.warning.as_str() {
                     diff = dtc::list_entries_new_not_in_old(&old_warning_message, &new_message);
+                    severity = "warning";
                     old_warning_message = new_message;
                 } else if topic_str == topics.service.as_str() {
                     diff = dtc::list_entries_new_not_in_old(&old_service_message, &new_message);
+                    severity = "notice";
                     old_service_message = new_message;
                 } else if topic_str == topics.info.as_str() {
                     diff = dtc::list_entries_new_not_in_old(&old_info_message, &new_message);
+                    severity = "info";
                     old_info_message = new_message;
                 } else if topic_str == topics.status.as_str() {
                     diff = dtc::list_entries_new_not_in_old(&old_status_message, &new_message);
+                    severity = "debug";
                     old_status_message = new_message;
                 }
 
@@ -72,13 +78,19 @@ async fn main() -> Result<(), Box<dyn Error>> {
                 // println!("timestamp,date_time,id,text");
                 for e in diff {
                     println!(
-                        "{},{},{},{},{}",
-                        topic_str,
-                        e.date_time.timestamp,
+                        "{} {} {}[{}]: {} {}",
                         e.date_time.date_time,
+                        topics.systemid,
+                        topics.ecuid,
                         e.state.id,
+                        severity,
                         e.state.text
                     );
+                    /*
+                    TODO
+                     sende  e.date_time.timestamp,topics.systemid,topics.ecuid,e.state.id,severity,e.state.text
+                     an InfluxDB als Syslog-Datensatz
+                    */
                 }
             }
             Ok(other) => {

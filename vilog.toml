@@ -27,7 +27,10 @@ warning = "open3e/680_264_WarningDtcHistory"
 service = "open3e/680_262_ServiceDtcHistory"
 info = "open3e/680_260_InfoDtcHistory"
 status = "open3e/680_258_StatusDtcHistory"
-
+# Name/ID of your Heat-Pump. Will become the host name in InfluxDB
+systemid = "250A"
+# Name/ID of your ECU. Will become the app name in InfluxDB
+ecuid = "HPMU"
 # open3e command topic/channel (depends on your open3e-config)
 command_topic = "open3e/cmnd"
 # command-structure in json (here: read the logs and send data in json)

@@ -26,6 +26,8 @@ pub struct TopicsConfig {
     pub service: Option<String>,
     pub info: Option<String>,
     pub status: Option<String>,
+    pub ecuid: Option<String>,
+    pub systemid: Option<String>,
     pub command_topic: Option<String>,
     pub command_payload: Option<String>,
     pub command_interval_secs: Option<u64>,
@@ -38,6 +40,8 @@ pub struct TopicsResolved {
     pub service: String,
     pub info: String,
     pub status: String,
+    pub ecuid: String,
+    pub systemid: String,
     pub command_topic: String,
     pub command_payload: String,
     pub command_interval_secs: u64,
@@ -102,6 +106,8 @@ pub fn resolve_topics(cfg: Option<&TopicsConfig>) -> TopicsResolved {
         service: "open3e/680_262_ServiceDtcHistory".to_string(),
         info: "open3e/680_260_InfoDtcHistory".to_string(),
         status: "open3e/680_258_StatusDtcHistory".to_string(),
+        ecuid: "HPMU".to_string(),
+        systemid: "250A".to_string(),
         command_topic: "open3e/cmnd".to_string(),
         command_payload: "{\"mode\": \"read-json\", \"data\":[258,260,262,264,266]}".to_string(),
         command_interval_secs: 60,
@@ -119,6 +125,10 @@ pub fn resolve_topics(cfg: Option<&TopicsConfig>) -> TopicsResolved {
         status: cfg
             .and_then(|c| c.status.clone())
             .unwrap_or(defaults.status),
+        ecuid: cfg.and_then(|c| c.ecuid.clone()).unwrap_or(defaults.ecuid),
+        systemid: cfg
+            .and_then(|c| c.systemid.clone())
+            .unwrap_or(defaults.systemid),
         command_topic: cfg
             .and_then(|c| c.command_topic.clone())
             .unwrap_or(defaults.command_topic),
