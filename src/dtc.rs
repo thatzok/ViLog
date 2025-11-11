@@ -8,6 +8,11 @@ pub struct ResponseDtc {
     #[serde(default)]
     pub list_entries: Vec<ListEntryDtc>,
 }
+impl ResponseDtc {
+    pub fn new_empty() -> Self {
+        Self { count: 0, grand_total: None, list_entries: Vec::new() }
+    }
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "PascalCase")]
