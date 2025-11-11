@@ -1,0 +1,42 @@
+# vilog.toml
+# ViLog Configuration File (Example/Defaults)
+# ViLog Konfigurationsdatei (Beispiel/Defaults)
+# Note: A .toml file is like a .ini file, only better standardized.
+#
+# - An alternative path can be set using the environment variable VILOG_CONFIG.
+#
+# - All fields are optional; missing values will replaced with appropriate defaults where applicable.
+
+[mqtt]
+# Client-ID
+client_id = "vilogger"
+# Broker-Host/IP
+host = "192.168.112.12"
+# Broker-Port
+port = 1883
+# authentification
+username = "vilogger"
+password = ""
+# Keep-Alive of mqtt-connection (in seconds)
+keep_alive_secs = 30
+
+[topics]
+# topics where open3e sends data IN JSON (depends on your open3e-config)
+error = "open3e/680_266_ErrorDtcHistory"
+warning = "open3e/680_264_WarningDtcHistory"
+service = "open3e/680_262_ServiceDtcHistory"
+info = "open3e/680_260_InfoDtcHistory"
+status = "open3e/680_258_StatusDtcHistory"
+
+# open3e command topic/channel (depends on your open3e-config)
+command_topic = "open3e/cmnd"
+# command-structure in json (here: read the logs and send data in json)
+# "read-json" is important because we can only process json-payload
+command_payload = "{\"mode\": \"read-json\", \"data\":[258,260,262,264,266]}"
+# interval in seconds the command is send and response are received
+# determines how quickly new log entries are processed.
+# The interval shouldn't be too short, because a relatively large
+# amount of data can be transferred with each request. 30 to 60 seconds
+# should be fast enough to see log entries in a timely manner.
+command_interval_secs = 30
+

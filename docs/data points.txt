@@ -1,3 +1,5 @@
+data-channels:
+--------------
 open3e/680_257_StatusDtcList
 open3e/680_258_StatusDtcHistory
 open3e/680_259_InfoDtcList
@@ -10,17 +12,10 @@ open3e/680_265_ErrorDtcList
 open3e/680_266_ErrorDtcHistory
 
 open3e/cmnd
-
+------------
 {"mode": "read-json", "data":[257,258,259,260,261,262,263,264,265,266]}
-
 // history only
 {"mode": "read-json", "data":[258,260,262,264,266]}
-
+// only status
 {"mode": "read-json", "data":[258]}
 
-
-[
-ListEntryDtc { state: State { id: 134, text: "FourThreeWayValveIdlePosition" },date_time: EntryDateTime { date_time: "2025-11-10 11:19:28", timestamp: 1762769968000 }, unknown: 1 },
-ListEntryDtc { state: State { id: 123, text: "HeatPumpOff" },                  date_time: EntryDateTime { date_time: "2025-11-10 11:19:25", timestamp: 1762769965000 }, unknown: 1 },
-ListEntryDtc { state: State { id: 129, text: "HeatPumpPostRun" },              date_time: EntryDateTime { date_time: "2025-11-10 11:17:24", timestamp: 1762769844000 }, unknown: 1 }
-]
