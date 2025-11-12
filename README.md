@@ -143,7 +143,6 @@ timeout_secs = 5
 
 ```
 
-281 / 5.000
 ## Contribute
 
 Issues and pull requests are welcome. Please adhere to the existing style (rustfmt, clippy without warnings) and try to cover changes with tests where appropriate.
