@@ -25,6 +25,8 @@ First, all log entries still in the system's history are displayed (sometimes no
 
 If the InfluxDB option is enabled but a connection cannot be established, error messages are displayed (no news is good news).
 
+* 2025-11-02 08:58:38 250A HPMU[100]: warning RestoreEepromToDefault
+* 2025-11-02 09:37:11 250A HPMU[100]: warning RestoreEepromToDefault
 * 2025-11-12 11:10:36 250A HPMU[125]: debug HeatPumpHeatingActive
 * 2025-11-12 12:08:23 250A HPMU[129]: debug HeatPumpPostRun
 * 2025-11-12 12:10:24 250A HPMU[123]: debug HeatPumpOff
@@ -45,8 +47,6 @@ If the InfluxDB option is enabled but a connection cannot be established, error 
 * 2025-11-12 08:17:22 250A HPMU[120]: info NoiseReductionModeActive
 * 2025-11-12 11:12:28 250A HPMU[120]: info NoiseReductionModeActive
 * 2025-11-12 13:11:03 250A HPMU[120]: info NoiseReductionModeActive
-* 2025-10-20 08:58:38 250A HPMU[100]: warning RestoreEepromToDefault
-* 2025-10-20 09:37:11 250A HPMU[100]: warning RestoreEepromToDefault
 
 And then new log entries are shown as soon as they appear.
 
@@ -54,7 +54,6 @@ And then new log entries are shown as soon as they appear.
 * 2025-11-12 14:47:46 250A HPMU[124]: debug HeatPumpPreRun
 * 2025-11-12 14:49:47 250A HPMU[125]: debug HeatPumpHeatingActive
 * 2025-11-12 14:51:39 250A HPMU[120]: info NoiseReductionModeActive
-
 
 
 ## Installation
