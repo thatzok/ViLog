@@ -1,0 +1,91 @@
+name: Build (Windows + Linux)
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify tag commit is on main
+        shell: pwsh
+        run: |
+          git fetch --depth=0 origin +refs/heads/main:refs/remotes/origin/main
+          git merge-base --is-ancestor origin/main $env:GITHUB_SHA
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "Tag commit is not on main. Failing job as workflow should only run for tags on main."
+            exit 1
+          }
+
+      - name: Install Rust toolchain (stable) with Windows target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Cargo build (debug)
+        run: cargo build --target x86_64-pc-windows-msvc
+
+      - name: Cargo build (release)
+        run: cargo build --release --target x86_64-pc-windows-msvc
+
+      - name: Extract version from Cargo.toml
+        shell: pwsh
+        run: |
+          $content = Get-Content Cargo.toml -Raw
+          if ($content -match '(?ms)^\[package\].*?^version\s*=\s*"(.*?)"') {
+            $version = $Matches[1]
+            "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+            Write-Host "Detected version: $version"
+          } else {
+            Write-Error "Could not extract version from Cargo.toml"
+          }
+
+      - name: Rename Windows release binary to include version
+        shell: pwsh
+        run: |
+          $src = "target\x86_64-pc-windows-msvc\release\vilog.exe"
+          if (-Not (Test-Path $src)) { Write-Error "Binary not found: $src" }
+          $dst = "target\x86_64-pc-windows-msvc\release\vilog-$env:VERSION.exe"
+          Copy-Item $src $dst -Force
+          Write-Host "Renamed artifact to $dst"
+
+      - name: Upload Windows release artifact (versioned)
+        uses: actions/upload-artifact@v4
+        with:
+          name: vilog-${{ env.VERSION }}.exe
+          path: target\x86_64-pc-windows-msvc\release\vilog-${{ env.VERSION }}-windows-amd64.exe
+          if-no-files-found: error
+          retention-days: 90
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify tag commit is on main
+        run: |
+          git fetch --depth=0 origin +refs/heads/main:refs/remotes/origin/main
+          git merge-base --is-ancestor origin/main "$GITHUB_SHA"
+        shell: bash
+
+      - name: Install system dependencies (OpenSSL, pkg-config)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libssl-dev
+
+      - name: Install Rust toolchain (stable) with Linux target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-gnu
+
+      - name: Cargo build (debug)
+        run: cargo build --target x86_64-unknown-linux-gnu
+
+      - name: Cargo build (release)
+        run: cargo build --release --target x86_64-unknown-linux-gnu
