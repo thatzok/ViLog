@@ -57,7 +57,7 @@ And then new log entries are shown as soon as they appear.
 
 
 ## Installation
-If you simply want to use the program, download the binary for Windows or Linux from the latest release on the release page and create a `vilog.toml` configuration file that suits your situation.
+If you simply want to use the program, download the binary for Windows or Linux from the latest release on the [releases page](https://github.com/thatzok/ViLog/releases) and create a `vilog.toml` configuration file that suits your situation.
 
 You can start the program manually; it will run continuously (waiting in an event loop) without using any resources and can be stopped with CTRL-C.
 
