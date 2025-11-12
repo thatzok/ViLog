@@ -1,17 +1,16 @@
 # vilog.toml
-# ViLog Configuration File (Example/Defaults)
-# ViLog Konfigurationsdatei (Beispiel/Defaults)
+# ViLog Configuration File with examples and defaults
 # Note: A .toml file is like a .ini file, only better standardized.
 #
 # - An alternative path can be set using the environment variable VILOG_CONFIG.
 #
-# - All fields are optional; missing values will replaced with appropriate defaults where applicable.
+# - All fields are optional; missing values will be replaced with appropriate defaults where applicable.
 
 [mqtt]
 # Client-ID
 client_id = "vilogger"
 # Broker-Host/IP
-host = "192.168.112.12"
+host = "127.0.0.1"
 # Broker-Port
 port = 1883
 # authentification
@@ -27,19 +26,35 @@ warning = "open3e/680_264_WarningDtcHistory"
 service = "open3e/680_262_ServiceDtcHistory"
 info = "open3e/680_260_InfoDtcHistory"
 status = "open3e/680_258_StatusDtcHistory"
-# Name/ID of your Heat-Pump. Will become the host name in InfluxDB
+# Name/ID of your Heat-Pump for the log/InfluxDB.
 systemid = "250A"
-# Name/ID of your ECU. Will become the app name in InfluxDB
+# Name/ID of your ECU  for the log/InfluxDB.
 ecuid = "HPMU"
 # open3e command topic/channel (depends on your open3e-config)
 command_topic = "open3e/cmnd"
 # command-structure in json (here: read the logs and send data in json)
 # "read-json" is important because we can only process json-payload
 command_payload = "{\"mode\": \"read-json\", \"data\":[258,260,262,264,266]}"
-# interval in seconds the command is send and response are received
+# interval in seconds the command is sent and responses are received
 # determines how quickly new log entries are processed.
-# The interval shouldn't be too short, because a relatively large
+# The interval shouldn't be too small, because a relatively large
 # amount of data can be transferred with each request. 30 to 60 seconds
 # should be fast enough to see log entries in a timely manner.
-command_interval_secs = 30
+command_interval_secs = 60
+
+[influxdb]
+# Enable/Disable writing to InfluxDB
+enabled = true
+# Base URL of InfluxDB server
+url = "http://127.0.0.1:8086"
+# Organization name
+org = "vilog"
+# Bucket to write to
+bucket = "vilog"
+# Auth token (use an InfluxDB API token with write permission on the bucket)
+token = ""
+# Measurement name to use for syslog-like entries
+measurement = "syslog"
+# HTTP request timeout in seconds
+timeout_secs = 5
 
