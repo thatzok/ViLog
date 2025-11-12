@@ -39,7 +39,7 @@ command_payload = "{\"mode\": \"read-json\", \"data\":[258,260,262,264,266]}"
 # determines how quickly new log entries are processed.
 # The interval shouldn't be too small, because a relatively large
 # amount of data can be transferred with each request. 30 to 60 seconds
-# should be fast enough to see log entries in a timely manner.
+# should be fast enough to see new log entries in a timely manner.
 command_interval_secs = 60
 
 [influxdb]
