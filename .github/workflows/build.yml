@@ -89,7 +89,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          src="target/x86_64-unknown-linux-gnu/release/vilog"
+          src="target/x86_64-unknown-linux-gnu/release/ViLog"
           if [ ! -f "$src" ]; then
             echo "Binary not found: $src" >&2
             exit 1
