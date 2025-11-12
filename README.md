@@ -20,6 +20,42 @@ The design philosophy is based on the Unix principle: a program should focus on 
 
 Since communication only takes place via an MQTT server and an InfluxDB server, ViLog can be run on any server/computer that can establish a connection to the servers.
 
+## Sample Output on Console
+First, all log entries still in the system's history are displayed (sometimes not in perfect chronological order, but the timestamps are correct).
+
+If the InfluxDB option is enabled but a connection cannot be established, error messages are displayed (no news is good news).
+
+* 2025-11-12 11:10:36 250A HPMU[125]: debug HeatPumpHeatingActive
+* 2025-11-12 12:08:23 250A HPMU[129]: debug HeatPumpPostRun
+* 2025-11-12 12:10:24 250A HPMU[123]: debug HeatPumpOff
+* 2025-11-12 12:10:27 250A HPMU[134]: debug FourThreeWayValveIdlePosition
+* 2025-11-12 13:07:04 250A HPMU[118]: debug FourThreeWayValveInternalBufferPosition
+* 2025-11-12 13:07:11 250A HPMU[124]: debug HeatPumpPreRun
+* 2025-11-12 13:09:12 250A HPMU[125]: debug HeatPumpHeatingActive
+* 2025-11-12 13:52:17 250A HPMU[129]: debug HeatPumpPostRun
+* 2025-11-12 13:54:18 250A HPMU[123]: debug HeatPumpOff
+* 2025-11-12 13:54:21 250A HPMU[134]: debug FourThreeWayValveIdlePosition
+* 2025-11-11 04:51:11 250A HPMU[120]: info NoiseReductionModeActive
+* 2025-11-11 09:14:14 250A HPMU[120]: info NoiseReductionModeActive
+* 2025-11-11 09:30:15 250A HPMU[120]: info NoiseReductionModeActive
+* 2025-11-11 11:59:08 250A HPMU[120]: info NoiseReductionModeActive
+* 2025-11-11 13:49:56 250A HPMU[120]: info NoiseReductionModeActive
+* 2025-11-11 15:30:13 250A HPMU[120]: info NoiseReductionModeActive
+* 2025-11-11 23:13:08 250A HPMU[120]: info NoiseReductionModeActive
+* 2025-11-12 08:17:22 250A HPMU[120]: info NoiseReductionModeActive
+* 2025-11-12 11:12:28 250A HPMU[120]: info NoiseReductionModeActive
+* 2025-11-12 13:11:03 250A HPMU[120]: info NoiseReductionModeActive
+* 2025-10-20 08:58:38 250A HPMU[100]: warning RestoreEepromToDefault
+* 2025-10-20 09:37:11 250A HPMU[100]: warning RestoreEepromToDefault
+
+And then new log entries are shown as soon as they appear.
+
+* 2025-11-12 14:47:39 250A HPMU[118]: debug FourThreeWayValveInternalBufferPosition
+* 2025-11-12 14:47:46 250A HPMU[124]: debug HeatPumpPreRun
+* 2025-11-12 14:49:47 250A HPMU[125]: debug HeatPumpHeatingActive
+* 2025-11-12 14:51:39 250A HPMU[120]: info NoiseReductionModeActive
+
+
 
 ## Installation
 If you simply want to use the program, download the binary for Windows or Linux from the latest release on the release page and create a `vilog.toml` configuration file that suits your situation.
