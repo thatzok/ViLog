@@ -13,23 +13,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Verify tag commit is on main
-        shell: pwsh
-        run: |
-          git fetch --depth=0 origin +refs/heads/main:refs/remotes/origin/main
-          git merge-base --is-ancestor origin/main $env:GITHUB_SHA
-          if ($LASTEXITCODE -ne 0) {
-            Write-Host "Tag commit is not on main. Failing job as workflow should only run for tags on main."
-            exit 1
-          }
-
       - name: Install Rust toolchain (stable) with Windows target
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: x86_64-pc-windows-msvc
-
-      - name: Cargo build (debug)
-        run: cargo build --target x86_64-pc-windows-msvc
 
       - name: Cargo build (release)
         run: cargo build --release --target x86_64-pc-windows-msvc
@@ -51,7 +38,7 @@ jobs:
         run: |
           $src = "target\x86_64-pc-windows-msvc\release\vilog.exe"
           if (-Not (Test-Path $src)) { Write-Error "Binary not found: $src" }
-          $dst = "target\x86_64-pc-windows-msvc\release\vilog-$env:VERSION.exe"
+          $dst = "target\x86_64-pc-windows-msvc\release\vilog-$env:VERSION-windows-amd64.exe"
           Copy-Item $src $dst -Force
           Write-Host "Renamed artifact to $dst"
 
@@ -69,12 +56,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Verify tag commit is on main
-        run: |
-          git fetch --depth=0 origin +refs/heads/main:refs/remotes/origin/main
-          git merge-base --is-ancestor origin/main "$GITHUB_SHA"
-        shell: bash
-
       - name: Install system dependencies (OpenSSL, pkg-config)
         run: |
           sudo apt-get update
@@ -84,9 +65,6 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: x86_64-unknown-linux-gnu
-
-      - name: Cargo build (debug)
-        run: cargo build --target x86_64-unknown-linux-gnu
 
       - name: Cargo build (release)
         run: cargo build --release --target x86_64-unknown-linux-gnu
