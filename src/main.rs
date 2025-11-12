@@ -4,16 +4,24 @@ use std::time::Duration;
 use rumqttc::v5::mqttbytes::QoS;
 use rumqttc::v5::AsyncClient;
 use rumqttc::v5::{Event, Incoming};
+use std::sync::Arc;
 use tokio::{task, time};
 
 mod config;
 mod dtc;
+mod influxdb;
+
+use crate::config::resolve_influx;
 use crate::config::{create_mqtt_options, read_app_config, TopicsResolved};
 use crate::dtc::{ListEntryDtc, ResponseDtc};
+use crate::influxdb::{escape_field_string, escape_measurement, escape_tag, send_to_influx};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn Error>> {
     pretty_env_logger::init();
+
+    println!("ViLog Version: {}", env!("CARGO_PKG_VERSION"));
+    log::info!("ViLog version:  {:?}", env!("CARGO_PKG_VERSION"));
 
     let app_cfg = read_app_config();
 
@@ -22,6 +30,21 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let topics_cfg_opt = app_cfg.as_ref().and_then(|c| c.topics.as_ref());
     let topics = config::resolve_topics(topics_cfg_opt);
+
+    // InfluxDB config and HTTP client
+    let influx_resolved = resolve_influx(app_cfg.as_ref().and_then(|c| c.influxdb.as_ref()));
+    let http_client = if influx_resolved.enabled {
+        let timeout = Duration::from_secs(influx_resolved.timeout_secs);
+        match reqwest::Client::builder().timeout(timeout).build() {
+            Ok(c) => Some(c),
+            Err(e) => {
+                log::error!("Failed to create HTTP client for InfluxDB: {}", e);
+                None
+            }
+        }
+    } else {
+        None
+    };
 
     let mut old_info_message = ResponseDtc::new_empty();
     let mut old_status_message = ResponseDtc::new_empty();
@@ -75,22 +98,61 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
                 dtc::sort_entries_by_timestamp(&mut diff);
 
-                // println!("timestamp,date_time,id,text");
-                for e in diff {
-                    println!(
-                        "{} {} {}[{}]: {} {}",
-                        e.date_time.date_time,
-                        topics.systemid,
-                        topics.ecuid,
-                        e.state.id,
-                        severity,
-                        e.state.text
-                    );
-                    /*
-                    TODO
-                     sende  e.date_time.timestamp,topics.systemid,topics.ecuid,e.state.id,severity,e.state.text
-                     an InfluxDB als Syslog-Datensatz
-                    */
+                if !diff.is_empty() {
+                    if let (Some(client), true) = (&http_client, influx_resolved.enabled) {
+                        let mut body = String::with_capacity(diff.len() * 128);
+                        for e in &diff {
+                            let ts_ms = e.date_time.timestamp; // already in ms 
+                            let mut line = String::new();
+                            line.push_str(&escape_measurement(&influx_resolved.measurement));
+                            // tags
+                            line.push(',');
+                            line.push_str("systemid=");
+                            line.push_str(&escape_tag(&topics.systemid));
+                            line.push(',');
+                            line.push_str("ecuid=");
+                            line.push_str(&escape_tag(&topics.ecuid));
+                            line.push(',');
+                            line.push_str("severity=");
+                            line.push_str(&escape_tag(severity));
+
+                            // fields
+                            line.push(' ');
+                            line.push_str("textid=");
+                            line.push_str(&e.state.id.to_string());
+                            line.push('i');
+                            line.push(',');
+                            line.push_str("text=");
+                            line.push_str(&escape_field_string(&e.state.text));
+                            // timestamp
+                            line.push(' ');
+                            line.push_str(&ts_ms.to_string());
+                            body.push_str(&line);
+                            body.push('\n');
+                        }
+                        let body_clone = body.clone();
+                        let client = client.clone();
+                        let influx = Arc::new(influx_resolved.clone());
+                        task::spawn(async move {
+                            if let Err(err) =
+                                send_to_influx(client.clone(), influx.clone(), body_clone).await
+                            {
+                                log::error!("InfluxDB write failed: {}", err);
+                            }
+                        });
+                    }
+
+                    for e in diff {
+                        println!(
+                            "{} {} {}[{}]: {} {}",
+                            e.date_time.date_time,
+                            topics.systemid,
+                            topics.ecuid,
+                            e.state.id,
+                            severity,
+                            e.state.text
+                        );
+                    }
                 }
             }
             Ok(other) => {

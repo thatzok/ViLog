@@ -7,6 +7,7 @@ use std::time::Duration;
 pub struct AppConfig {
     pub mqtt: Option<MqttConfig>,
     pub topics: Option<TopicsConfig>,
+    pub influxdb: Option<InfluxConfig>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -45,6 +46,28 @@ pub struct TopicsResolved {
     pub command_topic: String,
     pub command_payload: String,
     pub command_interval_secs: u64,
+}
+
+#[derive(Debug, Deserialize, Clone)]
+pub struct InfluxConfig {
+    pub enabled: Option<bool>,
+    pub url: Option<String>,
+    pub org: Option<String>,
+    pub bucket: Option<String>,
+    pub token: Option<String>,
+    pub measurement: Option<String>,
+    pub timeout_secs: Option<u64>,
+}
+
+#[derive(Clone, Debug)]
+pub struct InfluxResolved {
+    pub enabled: bool,
+    pub url: String,
+    pub org: String,
+    pub bucket: String,
+    pub token: String,
+    pub measurement: String,
+    pub timeout_secs: u64,
 }
 
 pub fn read_app_config() -> Option<AppConfig> {
@@ -138,5 +161,31 @@ pub fn resolve_topics(cfg: Option<&TopicsConfig>) -> TopicsResolved {
         command_interval_secs: cfg
             .and_then(|c| c.command_interval_secs)
             .unwrap_or(defaults.command_interval_secs),
+    }
+}
+
+pub fn resolve_influx(cfg: Option<&InfluxConfig>) -> InfluxResolved {
+    let defaults = InfluxResolved {
+        enabled: false,
+        url: "http://127.0.0.1:8086".to_string(),
+        org: "my-org".to_string(),
+        bucket: "vilog".to_string(),
+        token: String::new(),
+        measurement: "syslog".to_string(),
+        timeout_secs: 5,
+    };
+
+    InfluxResolved {
+        enabled: cfg.and_then(|c| c.enabled).unwrap_or(defaults.enabled),
+        url: cfg.and_then(|c| c.url.clone()).unwrap_or(defaults.url),
+        org: cfg.and_then(|c| c.org.clone()).unwrap_or(defaults.org),
+        bucket: cfg.and_then(|c| c.bucket.clone()).unwrap_or(defaults.bucket),
+        token: cfg.and_then(|c| c.token.clone()).unwrap_or(defaults.token),
+        measurement: cfg
+            .and_then(|c| c.measurement.clone())
+            .unwrap_or(defaults.measurement),
+        timeout_secs: cfg
+            .and_then(|c| c.timeout_secs)
+            .unwrap_or(defaults.timeout_secs),
     }
 }
