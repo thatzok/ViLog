@@ -1,6 +1,7 @@
 name: Build (Windows + Linux)
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - '*'
@@ -89,3 +90,40 @@ jobs:
 
       - name: Cargo build (release)
         run: cargo build --release --target x86_64-unknown-linux-gnu
+
+      - name: Extract version from Cargo.toml
+        shell: bash
+        run: |
+          set -euo pipefail
+          version=$(awk '
+            inpkg && $0 ~ /^version *= *"/ { match($0, /"([^"]+)"/, a); print a[1]; exit }
+            /^\[package\]/ { inpkg=1; next }
+            /^\[/ { if (!/^\[package\]/) inpkg=0 }
+          ' Cargo.toml)
+          if [ -z "$version" ]; then
+            echo "Could not extract version from Cargo.toml" >&2
+            exit 1
+          fi
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+          echo "Detected version: $version"
+
+      - name: Rename Linux release binary to include version and platform
+        shell: bash
+        run: |
+          set -euo pipefail
+          src="target/x86_64-unknown-linux-gnu/release/vilog"
+          if [ ! -f "$src" ]; then
+            echo "Binary not found: $src" >&2
+            exit 1
+          fi
+          dst="target/x86_64-unknown-linux-gnu/release/vilog-${VERSION}-linux-X86_64"
+          cp "$src" "$dst"
+          echo "Renamed artifact to $dst"
+
+      - name: Upload Linux release artifact (versioned)
+        uses: actions/upload-artifact@v4
+        with:
+          name: vilog-${{ env.VERSION }}-linux-X86_64
+          path: target/x86_64-unknown-linux-gnu/release/vilog-${{ env.VERSION }}-linux-X86_64
+          if-no-files-found: error
+          retention-days: 90
