@@ -14,7 +14,7 @@ mod influxdb;
 use crate::config::resolve_influx;
 use crate::config::{create_mqtt_options, read_app_config, TopicsResolved};
 use crate::dtc::{ListEntryDtc, ResponseDtc};
-use crate::influxdb::{escape_field_string, escape_measurement, escape_tag, send_to_influx};
+use crate::influxdb::{escape_field_string, escape_measurement, escape_tag, send_to_influx, timestamp_to_datetime_string};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -130,6 +130,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
                             body.push_str(&line);
                             body.push('\n');
                         }
+                        #[cfg(debug_assertions)]
+                        {
+                            print!("Sending data to InfluxDB:\n  ----\n{}  ----\n", body);
+                        }
                         let body_clone = body.clone();
                         let client = client.clone();
                         let influx = Arc::new(influx_resolved.clone());
@@ -144,7 +148,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
                     for e in diff {
                         println!(
-                            "{} {} {}[{}]: {} {}",
+                            "{} ({}) {} {}[{}]: {} {}",
+                            timestamp_to_datetime_string(e.date_time.timestamp),
                             e.date_time.date_time,
                             topics.systemid,
                             topics.ecuid,
