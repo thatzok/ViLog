@@ -21,7 +21,7 @@ The design philosophy is based on the Unix principle: a program should focus on 
 Since communication only takes place via an MQTT server and an InfluxDB server, ViLog can be run on any server/computer that can establish a connection to the servers.
 
 ## Sample Output on Console
-First, all log entries still in the system's history are displayed (sometimes not in perfect chronological order, but the timestamps are correct).
+When the program starts, all messages still in the history of the heat pump will be displayed and logged.(sometimes not in perfect chronological order, but the timestamps are correct, therefore, the data reported to InfluxDB is always correct, and there is no duplicate data even if the program is started several times in succession.).
 
 * 2025-11-02T06:58:38+00:00 (2025-11-02 08:58:38) 250A HPMU[100]: Warning warning A.100 RestoreEepromToDefault
 * 2025-11-02T07:37:11+00:00 (2025-11-02 09:37:11) 250A HPMU[100]: Warning warning A.100 RestoreEepromToDefault
