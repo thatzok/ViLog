@@ -1,5 +1,8 @@
 # vilog.toml
-# ViLog Configuration File with examples and defaults for MAIN ECU
+# # ViLog Configuration File with examples and defaults for VCMU
+#
+# If you use this file as a template, you have to rename it to "vilog.toml"
+#
 # Note: A .toml file is like a .ini file, only better standardized.
 #
 # - An alternative path can be set using the environment variable VILOG_CONFIG.
@@ -21,20 +24,20 @@ keep_alive_secs = 30
 
 [topics]
 # topics where open3e sends data IN JSON (depends on your open3e-config)
-error = "open3e/680_266_ErrorDtcHistory"
-warning = "open3e/680_264_WarningDtcHistory"
-service = "open3e/680_262_ServiceDtcHistory"
-info = "open3e/680_260_InfoDtcHistory"
-status = "open3e/680_258_StatusDtcHistory"
+error = "open3e/68C_266_ErrorDtcHistory"
+warning = "open3e/68C_264_WarningDtcHistory"
+service = "open3e/68C_262_ServiceDtcHistory"
+info = "open3e/68C_260_InfoDtcHistory"
+status = "open3e/68C_258_StatusDtcHistory"
 # Name/ID of your Heat-Pump for the log/InfluxDB.
 systemid = "250A"
 # Name/ID of your ECU  for the log/InfluxDB.
-ecuid = "HPMU"
+ecuid = "VCMU"
 # open3e command topic/channel (depends on your open3e-config)
 command_topic = "open3e/cmnd"
 # command-structure in json (here: read the logs and send data in json)
 # "read-json" is important because we can only process json-payload
-command_payload = "{\"mode\": \"read-json\", \"data\":[258,260,262,264,266]}"
+command_payload = "{\"mode\":\"read-json\", \"data\":[258,260,262,264,266], \"addr\":\"0x68c\"}"
 # interval in seconds the command is sent and responses are received
 # determines how quickly new log entries are processed.
 # The interval shouldn't be too small, because a relatively large

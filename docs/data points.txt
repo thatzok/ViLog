@@ -1,5 +1,11 @@
 data-channels:
 --------------
+
+HPMU (adr = 0x680, main ecu)
+"List" = probably actual (incomplete)
+"History" = probably (more data)
+-> we use only "History"
+
 open3e/680_257_StatusDtcList
 open3e/680_258_StatusDtcHistory
 open3e/680_259_InfoDtcList
@@ -13,9 +19,23 @@ open3e/680_266_ErrorDtcHistory
 
 open3e/cmnd
 ------------
+// all from HPMU
 {"mode": "read-json", "data":[257,258,259,260,261,262,263,264,265,266]}
-// history only
+
+// history only from HPMU
 {"mode": "read-json", "data":[258,260,262,264,266]}
-// only status
-{"mode": "read-json", "data":[258]}
+
+
+// VMCU
+
+{"mode":"read-json", "data":[258], "addr":"0x68c"}
+{"mode":"read-json", "data":[258,260,262,264,266], "addr":"0x68c"}
+
+open3e/68C_258_StatusDtcHistory
+open3e/68C_260_InfoDtcHistory
+open3e/68C_262_ServiceDtcHistory
+open3e/68C_264_WarningDtcHistory
+open3e/68C_266_ErrorDtcHistory
+----------------------------------------------------
+
 
