@@ -1,6 +1,5 @@
 use crate::config::InfluxResolved;
 use std::sync::Arc;
-use chrono::prelude::{DateTime, Utc};
 
 pub async fn send_to_influx(
     client: reqwest::Client,
@@ -91,11 +90,4 @@ pub fn escape_field_string(input: &str) -> String {
     }
     out.push('"');
     out
-}
-
-pub fn timestamp_to_datetime_string(timestamp: i64) -> String {
-    let datetime = DateTime::<Utc>::from_timestamp_millis(timestamp)
-        .expect("Ungültiger Timestamp");
-
-    format!("{}", datetime.format("%+"))
 }

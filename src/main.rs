@@ -14,7 +14,7 @@ mod influxdb;
 use crate::config::resolve_influx;
 use crate::config::{create_mqtt_options, read_app_config, TopicsResolved};
 use crate::dtc::{ListEntryDtc, ResponseDtc};
-use crate::influxdb::{escape_field_string, escape_measurement, escape_tag, send_to_influx, timestamp_to_datetime_string};
+use crate::influxdb::{escape_field_string, escape_measurement, escape_tag, send_to_influx};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -72,27 +72,21 @@ async fn main() -> Result<(), Box<dyn Error>> {
                     serde_json::from_str(payload_str).expect("failed to parse payload");
 
                 let mut diff: Vec<ListEntryDtc> = Vec::new();
-                let mut severity = "Debug";
 
                 if topic_str == topics.error.as_str() {
                     diff = dtc::list_entries_new_not_in_old(&old_error_message, &new_message);
                     old_error_message = new_message;
-                    severity = "err";
                 } else if topic_str == topics.warning.as_str() {
                     diff = dtc::list_entries_new_not_in_old(&old_warning_message, &new_message);
-                    severity = "warning";
                     old_warning_message = new_message;
                 } else if topic_str == topics.service.as_str() {
                     diff = dtc::list_entries_new_not_in_old(&old_service_message, &new_message);
-                    severity = "notice";
                     old_service_message = new_message;
                 } else if topic_str == topics.info.as_str() {
                     diff = dtc::list_entries_new_not_in_old(&old_info_message, &new_message);
-                    severity = "info";
                     old_info_message = new_message;
                 } else if topic_str == topics.status.as_str() {
                     diff = dtc::list_entries_new_not_in_old(&old_status_message, &new_message);
-                    severity = "debug";
                     old_status_message = new_message;
                 }
 
@@ -114,14 +108,16 @@ async fn main() -> Result<(), Box<dyn Error>> {
                             line.push_str(&escape_tag(&topics.ecuid));
                             line.push(',');
                             line.push_str("severity=");
-                            line.push_str(&escape_tag(severity));
+                            line.push_str(&escape_tag(e.get_severity().as_str()));
+                            line.push(',');
+                            line.push_str("type=");
+                            line.push_str(&escape_tag(e.state_type.as_str()));
+                            line.push(',');
+                            line.push_str("code=");
+                            line.push_str(&escape_tag(e.get_msg_code().as_str()));
 
                             // fields
                             line.push(' ');
-                            line.push_str("textid=");
-                            line.push_str(&e.state.id.to_string());
-                            line.push('i');
-                            line.push(',');
                             line.push_str("text=");
                             line.push_str(&escape_field_string(&e.state.text));
                             // timestamp
@@ -148,13 +144,15 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
                     for e in diff {
                         println!(
-                            "{} ({}) {} {}[{}]: {} {}",
-                            timestamp_to_datetime_string(e.date_time.timestamp),
+                            "{} ({}) {} {}[{}]: {} {} {} {}",
+                            e.get_iso8601_from_timestamp(),
                             e.date_time.date_time,
                             topics.systemid,
                             topics.ecuid,
                             e.state.id,
-                            severity,
+                            e.state_type,
+                            e.get_severity(),
+                            e.get_msg_code(),
                             e.state.text
                         );
                     }

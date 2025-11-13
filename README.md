@@ -23,41 +23,46 @@ Since communication only takes place via an MQTT server and an InfluxDB server, 
 ## Sample Output on Console
 First, all log entries still in the system's history are displayed (sometimes not in perfect chronological order, but the timestamps are correct).
 
-If the InfluxDB option is enabled but a connection cannot be established, error messages are displayed (no news is good news).
+* 2025-11-02T06:58:38+00:00 (2025-11-02 08:58:38) 250A HPMU[100]: Warning warning A.100 RestoreEepromToDefault
+* 2025-11-02T07:37:11+00:00 (2025-11-02 09:37:11) 250A HPMU[100]: Warning warning A.100 RestoreEepromToDefault
+* 2025-11-12T18:55:59+00:00 (2025-11-12 19:55:59) 250A HPMU[120]: Info info I.120 NoiseReductionModeActive
+* 2025-11-12T21:25:37+00:00 (2025-11-12 22:25:37) 250A HPMU[120]: Info info I.120 NoiseReductionModeActive
+* 2025-11-12T23:43:17+00:00 (2025-11-13 00:43:17) 250A HPMU[120]: Info info I.120 NoiseReductionModeActive
+* 2025-11-13T01:45:38+00:00 (2025-11-13 02:45:38) 250A HPMU[120]: Info info I.120 NoiseReductionModeActive
+* 2025-11-13T03:56:33+00:00 (2025-11-13 04:56:33) 250A HPMU[120]: Info info I.120 NoiseReductionModeActive
+* 2025-11-13T06:10:39+00:00 (2025-11-13 07:10:39) 250A HPMU[120]: Info info I.120 NoiseReductionModeActive
+* 2025-11-13T06:13:37+00:00 (2025-11-13 07:13:37) 250A HPMU[120]: Info info I.120 NoiseReductionModeActive
+* 2025-11-13T06:29:38+00:00 (2025-11-13 07:29:38) 250A HPMU[120]: Info info I.120 NoiseReductionModeActive
+* 2025-11-13T08:15:19+00:00 (2025-11-13 09:15:19) 250A HPMU[124]: State debug S.124 HeatPumpPreRun
+* 2025-11-13T08:17:20+00:00 (2025-11-13 09:17:20) 250A HPMU[125]: State debug S.125 HeatPumpHeatingActive
+* 2025-11-13T08:19:13+00:00 (2025-11-13 09:19:13) 250A HPMU[120]: Info info I.120 NoiseReductionModeActive
+* 2025-11-13T09:11:50+00:00 (2025-11-13 10:11:50) 250A HPMU[129]: State debug S.129 HeatPumpPostRun
+* 2025-11-13T09:13:51+00:00 (2025-11-13 10:13:51) 250A HPMU[123]: State debug S.123 HeatPumpOff
+* 2025-11-13T09:13:54+00:00 (2025-11-13 10:13:54) 250A HPMU[134]: State debug S.134 FourThreeWayValveIdlePosition
+* 2025-11-13T10:08:14+00:00 (2025-11-13 11:08:14) 250A HPMU[118]: State debug S.118 FourThreeWayValveInternalBufferPosition
+* 2025-11-13T10:08:21+00:00 (2025-11-13 11:08:21) 250A HPMU[124]: State debug S.124 HeatPumpPreRun
+* 2025-11-13T10:10:22+00:00 (2025-11-13 11:10:22) 250A HPMU[125]: State debug S.125 HeatPumpHeatingActive
+* 2025-11-13T10:12:15+00:00 (2025-11-13 11:12:15) 250A HPMU[120]: Info info I.120 NoiseReductionModeActive
+* 2025-11-13T10:18:01+00:00 (2025-11-13 11:18:01) 250A HPMU[134]: State debug S.134 FourThreeWayValveIdlePosition
+* 2025-11-13T10:18:02+00:00 (2025-11-13 11:18:02) 250A HPMU[115]: State debug S.115 FourThreeWayValveDomesticHotWaterPosition
 
-* 2025-11-02 08:58:38 250A HPMU[100]: warning RestoreEepromToDefault
-* 2025-11-02 09:37:11 250A HPMU[100]: warning RestoreEepromToDefault
-* 2025-11-12 11:10:36 250A HPMU[125]: debug HeatPumpHeatingActive
-* 2025-11-12 12:08:23 250A HPMU[129]: debug HeatPumpPostRun
-* 2025-11-12 12:10:24 250A HPMU[123]: debug HeatPumpOff
-* 2025-11-12 12:10:27 250A HPMU[134]: debug FourThreeWayValveIdlePosition
-* 2025-11-12 13:07:04 250A HPMU[118]: debug FourThreeWayValveInternalBufferPosition
-* 2025-11-12 13:07:11 250A HPMU[124]: debug HeatPumpPreRun
-* 2025-11-12 13:09:12 250A HPMU[125]: debug HeatPumpHeatingActive
-* 2025-11-12 13:52:17 250A HPMU[129]: debug HeatPumpPostRun
-* 2025-11-12 13:54:18 250A HPMU[123]: debug HeatPumpOff
-* 2025-11-12 13:54:21 250A HPMU[134]: debug FourThreeWayValveIdlePosition
-* 2025-11-11 04:51:11 250A HPMU[120]: info NoiseReductionModeActive
-* 2025-11-11 09:14:14 250A HPMU[120]: info NoiseReductionModeActive
-* 2025-11-11 09:30:15 250A HPMU[120]: info NoiseReductionModeActive
-* 2025-11-11 11:59:08 250A HPMU[120]: info NoiseReductionModeActive
-* 2025-11-11 13:49:56 250A HPMU[120]: info NoiseReductionModeActive
-* 2025-11-11 15:30:13 250A HPMU[120]: info NoiseReductionModeActive
-* 2025-11-11 23:13:08 250A HPMU[120]: info NoiseReductionModeActive
-* 2025-11-12 08:17:22 250A HPMU[120]: info NoiseReductionModeActive
-* 2025-11-12 11:12:28 250A HPMU[120]: info NoiseReductionModeActive
-* 2025-11-12 13:11:03 250A HPMU[120]: info NoiseReductionModeActive
+And then new log entries are shown as soon as they appear in chronological order.
 
-And then new log entries are shown as soon as they appear.
+* 2025-11-13T10:56:03+00:00 (2025-11-13 11:56:03) 250A HPMU[134]: State debug S.134 FourThreeWayValveIdlePosition
+* 2025-11-13T10:56:04+00:00 (2025-11-13 11:56:04) 250A HPMU[118]: State debug S.118 FourThreeWayValveInternalBufferPosition
+* 2025-11-13T10:56:25+00:00 (2025-11-13 11:56:25) 250A HPMU[120]: Info info I.120 NoiseReductionModeActive
+* 2025-11-13T11:14:56+00:00 (2025-11-13 12:14:56) 250A HPMU[129]: State debug S.129 HeatPumpPostRun
+* 2025-11-13T11:16:57+00:00 (2025-11-13 12:16:57) 250A HPMU[123]: State debug S.123 HeatPumpOff
+* 2025-11-13T11:17:00+00:00 (2025-11-13 12:17:00) 250A HPMU[134]: State debug S.134 FourThreeWayValveIdlePosition
 
-* 2025-11-12 14:47:39 250A HPMU[118]: debug FourThreeWayValveInternalBufferPosition
-* 2025-11-12 14:47:46 250A HPMU[124]: debug HeatPumpPreRun
-* 2025-11-12 14:49:47 250A HPMU[125]: debug HeatPumpHeatingActive
-* 2025-11-12 14:51:39 250A HPMU[120]: info NoiseReductionModeActive
+
+If the InfluxDB option is enabled but a connection cannot be established, also error messages are displayed (no news is good news).
 
 
 ## Installation
 If you simply want to use the program, download the binary for Windows or Linux from the latest release on the [releases page](https://github.com/thatzok/ViLog/releases) and create a `vilog.toml` configuration file that suits your situation.
+
+To set the correct MQTT parameters, you should already have Open3E installed and working, so that you can then set the corresponding values.
 
 You can start the program manually; it will run continuously (waiting in an event loop) without using any resources and can be stopped with CTRL-C.
 
