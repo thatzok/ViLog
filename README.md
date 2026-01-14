@@ -5,7 +5,7 @@
 
 # ViLog
 
-A lightweight logger/forwarder written in Rust that regularly retrieves status and diagnostic messages from a Viessmann Vitocal heat pump (and others based on the Viessmann OneBase platform), displays them on the console, and optionally writes them to InfluxDB. It runs on Windows and Linux.
+A lightweight logger/forwarder written in Rust that regularly retrieves status and diagnostic messages from a Viessmann Vitocal heat pump (and others based on the Viessmann OneBase platform), displays them on the console, and optionally writes them to InfluxDB, MySQL, PostgreSQL, or SQLite. It runs on Windows and Linux.
 
 The **Viessmann API** in the Viessmann Cloud **is not used**; the data is retrieved directly from the system via the CAN bus.
 
@@ -14,14 +14,14 @@ For more information about Open3E, see [Open3E](https://github.com/open3e/open3e
 
 Sounds a bit complicated at first? But in the end, it's very simple and reliable. HOWEVER: **Use at your own ris**k. I am not responsible if your heat pump suddenly stops working in the dead of winter.
 
-Optionally, the log data can be stored in an InfluxDB database for later analysis.
+Optionally, the log data can be stored in an InfluxDB database or a SQL database (MySQL, PostgreSQL, or SQLite) for later analysis. For more details on the SQL database structure, see [docs/database_structure.md](docs/database_structure.md).
 
 The design philosophy is based on the Unix principle: a program should focus on one task and perform it well, and even complex problems can be solved by combining small, specialized programs.
 
-Since communication only takes place via an MQTT server and an InfluxDB server, ViLog can be run on any server/computer that can establish a connection to the servers.
+Since communication only takes place via an MQTT server and the respective database servers, ViLog can be run on any server/computer that can establish a connection to the servers.
 
 ## Sample Output on Console
-When the program starts, all messages still in the history of the heat pump will be displayed and logged.(sometimes not in perfect chronological order, but the timestamps are correct, therefore, the data reported to InfluxDB is always correct, and there is no duplicate data even if the program is started several times in succession.).
+When the program starts, all messages still in the history of the heat pump will be displayed and logged.(sometimes not in perfect chronological order, but the timestamps are correct, therefore, the data reported to the databases is always correct, and there is no duplicate data even if the program is started several times in succession.).
 
 * 2025-11-02T06:58:38+00:00 (2025-11-02 08:58:38) 250A HPMU[100]: Warning warning A.100 RestoreEepromToDefault
 * 2025-11-02T07:37:11+00:00 (2025-11-02 09:37:11) 250A HPMU[100]: Warning warning A.100 RestoreEepromToDefault
@@ -56,7 +56,7 @@ And then new log entries are shown as soon as they appear in chronological order
 * 2025-11-13T11:17:00+00:00 (2025-11-13 12:17:00) 250A HPMU[134]: State debug S.134 FourThreeWayValveIdlePosition
 
 
-If the InfluxDB option is enabled but a connection cannot be established, also error messages are displayed (no news is good news).
+If the database options are enabled but a connection cannot be established, error messages are displayed (no news is good news).
 
 
 ## Installation
@@ -145,6 +145,24 @@ token = ""
 measurement = "syslog"
 # HTTP request timeout in seconds
 timeout_secs = 5
+
+[mysql]
+# Enable/Disable writing to MySQL/MariaDB
+enabled = false
+# Connection URL (format: mysql://user:password@host:port/database)
+url = "mysql://vilog:password@127.0.0.1:3306/vilog"
+
+[postgres]
+# Enable/Disable writing to PostgreSQL
+enabled = false
+# Connection URL (format: postgres://user:password@host:port/database)
+url = "postgres://vilog:password@127.0.0.1:5432/vilog"
+
+[sqlite]
+# Enable/Disable writing to SQLite
+enabled = false
+# Connection URL (format: sqlite:path/to/database.db)
+url = "sqlite:vilog.db"
 
 ```
 
