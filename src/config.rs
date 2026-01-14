@@ -8,6 +8,9 @@ pub struct AppConfig {
     pub mqtt: Option<MqttConfig>,
     pub topics: Option<TopicsConfig>,
     pub influxdb: Option<InfluxConfig>,
+    pub mysql: Option<SqlConfig>,
+    pub postgres: Option<SqlConfig>,
+    pub sqlite: Option<SqlConfig>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -59,6 +62,12 @@ pub struct InfluxConfig {
     pub timeout_secs: Option<u64>,
 }
 
+#[derive(Debug, Deserialize, Clone)]
+pub struct SqlConfig {
+    pub enabled: Option<bool>,
+    pub url: Option<String>, // Connection string: mysql://user:pass@host/db, postgres://..., sqlite://...
+}
+
 #[derive(Clone, Debug)]
 pub struct InfluxResolved {
     pub enabled: bool,
@@ -68,6 +77,12 @@ pub struct InfluxResolved {
     pub token: String,
     pub measurement: String,
     pub timeout_secs: u64,
+}
+
+#[derive(Clone, Debug)]
+pub struct SqlResolved {
+    pub enabled: bool,
+    pub url: String,
 }
 
 pub fn read_app_config() -> Option<AppConfig> {
@@ -187,5 +202,17 @@ pub fn resolve_influx(cfg: Option<&InfluxConfig>) -> InfluxResolved {
         timeout_secs: cfg
             .and_then(|c| c.timeout_secs)
             .unwrap_or(defaults.timeout_secs),
+    }
+}
+
+pub fn resolve_sql(cfg: Option<&SqlConfig>) -> SqlResolved {
+    let defaults = SqlResolved {
+        enabled: false,
+        url: String::new(),
+    };
+
+    SqlResolved {
+        enabled: cfg.and_then(|c| c.enabled).unwrap_or(defaults.enabled),
+        url: cfg.and_then(|c| c.url.clone()).unwrap_or(defaults.url),
     }
 }

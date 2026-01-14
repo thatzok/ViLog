@@ -10,11 +10,13 @@ use tokio::{task, time};
 mod config;
 mod dtc;
 mod influxdb;
+mod database;
 
 use crate::config::resolve_influx;
-use crate::config::{create_mqtt_options, read_app_config, TopicsResolved};
+use crate::config::{create_mqtt_options, read_app_config, TopicsResolved, resolve_sql};
 use crate::dtc::{ListEntryDtc, ResponseDtc};
 use crate::influxdb::{escape_field_string, escape_measurement, escape_tag, send_to_influx};
+use crate::database::DatabasePools;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -45,6 +47,13 @@ async fn main() -> Result<(), Box<dyn Error>> {
     } else {
         None
     };
+
+    // SQL databases config
+    let mysql_cfg = resolve_sql(app_cfg.as_ref().and_then(|c| c.mysql.as_ref()));
+    let postgres_cfg = resolve_sql(app_cfg.as_ref().and_then(|c| c.postgres.as_ref()));
+    let sqlite_cfg = resolve_sql(app_cfg.as_ref().and_then(|c| c.sqlite.as_ref()));
+
+    let db_pools = Arc::new(DatabasePools::init(&mysql_cfg, &postgres_cfg, &sqlite_cfg).await);
 
     let mut old_info_message = ResponseDtc::new_empty();
     let mut old_status_message = ResponseDtc::new_empty();
@@ -141,6 +150,15 @@ async fn main() -> Result<(), Box<dyn Error>> {
                             }
                         });
                     }
+
+                    // Write to SQL databases
+                    let db_pools_clone = db_pools.clone();
+                    let diff_clone = diff.clone();
+                    let systemid = topics.systemid.clone();
+                    let ecuid = topics.ecuid.clone();
+                    task::spawn(async move {
+                        db_pools_clone.write_entries(diff_clone, systemid, ecuid).await;
+                    });
 
                     for e in diff {
                         println!(

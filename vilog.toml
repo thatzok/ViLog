@@ -58,3 +58,21 @@ measurement = "syslog"
 # HTTP request timeout in seconds
 timeout_secs = 5
 
+[mysql]
+# Enable/Disable writing to MySQL/MariaDB
+enabled = false
+# Connection URL (format: mysql://user:password@host:port/database)
+url = "mysql://vilog:password@127.0.0.1:3306/vilog"
+
+[postgres]
+# Enable/Disable writing to PostgreSQL
+enabled = false
+# Connection URL (format: postgres://user:password@host:port/database)
+url = "postgres://vilog:password@127.0.0.1:5432/vilog"
+
+[sqlite]
+# Enable/Disable writing to SQLite
+enabled = false
+# Connection URL (format: sqlite:path/to/database.db)
+url = "sqlite:vilog.db"
+
